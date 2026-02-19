@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - GGFPC</title>
+    <link rel="stylesheet" href="Global.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Register.css">
+</head>
+
+<body>
+    <div class="login-page-body">
+        <div class="login-page-wrapper register-wrapper">
+            <div class="login-container">
+                <div class="login-header">
+                    <a href="loginggfpc.html" class="back-link">← Back to Login</a>
+                    <img src="ggfpcc.png" alt="GGFPC Logo" class="login-logo">
+                    <h2>Create Account</h2>
+                    <p>Join our community in just a few steps.</p>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-bar">
+                    <div class="step active-step" id="progress-step-1">1</div>
+                    <div class="line"></div>
+                    <div class="step" id="progress-step-2">2</div>
+                    <div class="line"></div>
+                    <div class="step" id="progress-step-3">3</div>
+                </div>
+
+                <form id="multi-step-form" class="account-form">
+
+                    <!-- Step 1: Personal Info -->
+                    <div class="form-step active-step-content" id="step-1">
+                        <h3>Personal Information</h3>
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" id="fname" name="fname" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mname">Middle Name</label>
+                            <input type="text" id="mname" name="mname" placeholder="James">
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" id="lname" name="lname" placeholder="Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+                        </div>
+                        <button type="button" class="cta-button full-width" onclick="nextStep(2)">Next Step</button>
+                    </div>
+
+                    <!-- Step 2: Account Info -->
+                    <div class="form-step hidden-step" id="step-2">
+                        <h3>Account Setup</h3>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Create Password</label>
+                            <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm your password" required>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="cta-button secondary-btn full-width" onclick="prevStep(1)">Back</button>
+                            <button type="button" class="cta-button full-width" onclick="nextStep(3)">Next Step</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Face Scan -->
+                    <div class="form-step hidden-step" id="step-3">
+                        <h3>Identity Verification</h3>
+                        <p class="scan-instruction">Please position your face within the frame for a live scan.</p>
+
+                        <div class="camera-container">
+                            <video id="video-feed" autoplay playsinline muted></video>
+                            <canvas id="capture-canvas" style="display: none;"></canvas>
+                            <div class="scan-overlay"></div>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="button" class="cta-button secondary-btn full-width" onclick="prevStep(2)">Back</button>
+                            <a href="ggfpc.html" class="cta-button full-width" style="text-decoration: none; text-align: center; display: block; line-height: normal;">
+                                Complete Registration
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let videoStream = null;
+
+        function validateStep(step) {
+            if (step === 1) {
+                const fname = document.getElementById('fname').value;
+                const lname = document.getElementById('lname').value;
+                const dob = document.getElementById('dob').value;
+                const phone = document.getElementById('phone').value;
+                if (!fname || !lname || !dob || !phone) {
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
+            }
+            if (step === 2) {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                if (!email || !password || !confirmPassword) {
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
+                if (password !== confirmPassword) {
+                    alert("Passwords don't match!");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function showStep(stepNum) {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(function(el) {
+                el.classList.remove('active-step-content');
+                el.classList.add('hidden-step');
+            });
+
+            // Show the target step
+            const targetStep = document.getElementById('step-' + stepNum);
+            if (targetStep) {
+                targetStep.classList.remove('hidden-step');
+                targetStep.classList.add('active-step-content');
+            }
+
+            // Update progress bar
+            for (let i = 1; i <= 3; i++) {
+                const progressStep = document.getElementById('progress-step-' + i);
+                if (progressStep) {
+                    if (i <= stepNum) {
+                        progressStep.classList.add('active-step');
+                    } else {
+                        progressStep.classList.remove('active-step');
+                    }
+                }
+            }
+
+            currentStep = stepNum;
+        }
+
+        function nextStep(stepNum) {
+            if (validateStep(currentStep)) {
+                showStep(stepNum);
+                if (stepNum === 3) {
+                    startCamera();
+                } else {
+                    stopCamera();
+                }
+            }
+        }
+
+        function prevStep(stepNum) {
+            showStep(stepNum);
+            if (stepNum === 3) {
+                startCamera();
+            } else {
+                stopCamera();
+            }
+        }
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: true
+                });
+                videoStream = stream;
+                const videoElement = document.getElementById('video-feed');
+                if (videoElement) {
+                    videoElement.srcObject = stream;
+                }
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                alert("Could not access camera. Please allow camera permissions.");
+            }
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+                videoStream = null;
+            }
+        }
+    </script>
+</body>
+
+</html>
