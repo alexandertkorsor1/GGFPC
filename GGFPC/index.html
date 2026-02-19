@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>God's Glory Free Pentecostal Church</title>
+    <meta name="description" content="Welcome to God's Glory Free Pentecostal Church - A place of worship, community, and spiritual growth.">
+    <link rel="stylesheet" href="Global.css">
+    <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="Register.css">
+    <link rel="stylesheet" href="forgotpassword.css">
+    <link rel="stylesheet" href="GGFPC.css">
+    <style>
+        /* ===== Page Transition System ===== */
+        .app-page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .app-page.active-page {
+            display: block;
+            opacity: 1;
+            animation: pageFadeIn 0.5s ease forwards;
+        }
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logout button in nav */
+        .logout-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Show Password Toggle */
+        .password-toggle-group {
+            position: relative;
+        }
+
+        .password-toggle-group input {
+            padding-right: 3rem !important;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            font-size: 1.1rem;
+            padding: 4px;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Fix hero text color */
+        .hero-content h1,
+        .hero-content p {
+            color: #fff;
+        }
+
+        /* Fix footer text color */
+        .footer,
+        .footer h3,
+        .footer p {
+            color: #fff;
+        }
+
+        /* Nav link for display user name */
+        .profile-name {
+            text-decoration: none;
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================== -->
+    <!-- PAGE 1: LOGIN (Shows First) -->
+    <!-- ============================================== -->
+    <div id="page-login" class="app-page active-page">
+        <div class="login-page-body">
+            <div class="login-page-wrapper">
+                <div class="login-container">
+                    <div class="login-header">
+                        <img src="ggfpcc.png" alt="GGFPC Logo" class="login-logo">
+                        <h2 id="form-title">Welcome To God's Glory Free Pentecostal Church</h2>
+                        <p id="form-subtitle">Sign in to access member features and book appointments.</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="login-form" class="account-form active-form">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" name="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <div class="password-toggle-group">
+                                <input type="password" id="login-password" name="password" placeholder="••••••••" required>
+                                <button type="button" class="toggle-password-btn" onclick="togglePassword('login-password', this)" title="Show/Hide Password">👁</button>
+                            </div>
+                        </div>
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox"> Remember me
+                            </label>
+                            <a href="#" class="forgotpassword" onclick="navigateTo('page-forgot'); return false;">Forgot Password?</a>
+                        </div>
+
+                        <!-- Sign In Button -->
+                        <button type="submit" class="cta-button full-width" style="border: none; cursor: pointer;">
+                            Sign In
+                        </button>
+                    </form>
+
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="#" onclick="navigateTo('page-register'); return false;">Register Now</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- PAGE 2: REGISTER -->
+    <!-- ============================================== -->
+    <div id="page-register" class="app-page">
+        <div class="login-page-body">
+            <div class="login-page-wrapper register-wrapper">
+                <div class="login-container">
+                    <div class="login-header">
+                        <a href="#" class="back-link" onclick="navigateTo('page-login'); return false;">← Back to Login</a>
+                        <img src="ggfpcc.png" alt="GGFPC Logo" class="login-logo">
+                        <h2>Create Account</h2>
+                        <p>Join our community in just a few steps.</p>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="progress-bar">
+                        <div class="step active-step" id="progress-step-1">1</div>
+                        <div class="line"></div>
+                        <div class="step" id="progress-step-2">2</div>
+                        <div class="line"></div>
+                        <div class="step" id="progress-step-3">3</div>
+                    </div>
+
+                    <form id="multi-step-form" class="account-form">
+
+                        <!-- Step 1: Personal Info -->
+                        <div class="form-step active-step-content" id="reg-step-1">
+                            <h3>Personal Information</h3>
+                            <div class="form-group">
+                                <label for="fname">First Name</label>
+                                <input type="text" id="fname" name="fname" placeholder="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mname">Middle Name</label>
+                                <input type="text" id="mname" name="mname" placeholder="James">
+                            </div>
+                            <div class="form-group">
+                                <label for="lname">Last Name</label>
+                                <input type="text" id="lname" name="lname" placeholder="Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+                            </div>
+                            <button type="button" class="cta-button full-width" onclick="regNextStep(2)">Next Step</button>
+                        </div>
+
+                        <!-- Step 2: Account Info -->
+                        <div class="form-step hidden-step" id="reg-step-2">
+                            <h3>Account Setup</h3>
+                            <div class="form-group">
+                                <label for="reg-email">Email Address</label>
+                                <input type="email" id="reg-email" name="email" placeholder="you@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Create Password</label>
+                                <input type="password" id="reg-password" name="password" placeholder="Create a strong password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-confirm-password">Confirm Password</label>
+                                <input type="password" id="reg-confirm-password" name="confirmPassword" placeholder="Confirm your password" required>
+                            </div>
+                            <div class="button-group">
+                                <button type="button" class="cta-button secondary-btn full-width" onclick="regPrevStep(1)">Back</button>
+                                <button type="button" class="cta-button full-width" onclick="regNextStep(3)">Next Step</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Face Scan -->
+                        <div class="form-step hidden-step" id="reg-step-3">
+                            <h3>Identity Verification</h3>
+                            <p class="scan-instruction">Please position your face within the frame for a live scan.</p>
+
+                            <div class="camera-container">
+                                <video id="video-feed" autoplay playsinline muted></video>
+                                <canvas id="capture-canvas" style="display: none;"></canvas>
+                                <div class="scan-overlay"></div>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="button" class="cta-button secondary-btn full-width" onclick="regPrevStep(2)">Back</button>
+                                <button type="button" class="cta-button full-width" onclick="completeRegistration()">
+                                    Complete Registration
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- PAGE 3: FORGOT PASSWORD -->
+    <!-- ============================================== -->
+    <div id="page-forgot" class="app-page">
+        <div class="login-page-body">
+            <div class="login-page-wrapper">
+                <div class="login-container">
+                    <div class="login-header">
+                        <a href="#" class="back-link" onclick="navigateTo('page-login'); return false;">← Back to Login</a>
+                        <img src="ggfpcc.png" alt="GGFPC Logo" class="login-logo">
+                        <h2>Forgot Password</h2>
+                        <p>Enter your phone number to receive a verification code.</p>
+                    </div>
+
+                    <!-- Step 1: Phone Number Input -->
+                    <div id="step-phone" class="forgot-step active">
+                        <form id="phone-form" class="account-form">
+                            <div class="form-group">
+                                <label for="phone-number">Phone Number</label>
+                                <input type="tel" id="phone-number" name="phone" placeholder="+231 XXX XXX XXXX" required>
+                            </div>
+                            <button type="submit" class="cta-button full-width">Send OTP</button>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: OTP Verification -->
+                    <div id="step-otp" class="forgot-step hidden">
+                        <div class="otp-info">
+                            <p>We sent a verification code to</p>
+                            <strong id="display-phone"></strong>
+                        </div>
+
+                        <form id="otp-form" class="account-form">
+                            <div class="otp-container">
+                                <input type="text" class="otp-input" maxlength="1" data-index="0" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" data-index="1" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" data-index="2" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" data-index="3" inputmode="numeric">
+                            </div>
+
+                            <div class="timer-container">
+                                <div class="timer-bar">
+                                    <div class="timer-progress" id="timer-progress"></div>
+                                </div>
+                                <p class="timer-text">
+                                    Code expires in <span id="timer-countdown" class="countdown">15</span> seconds
+                                </p>
+                            </div>
+
+                            <p id="otp-error" class="error-message hidden"></p>
+
+                            <button type="submit" class="cta-button full-width" id="verify-btn">Verify Code</button>
+
+                            <div class="resend-container">
+                                <button type="button" id="resend-btn" class="resend-link" disabled>
+                                    Resend Code
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 3: New Password -->
+                    <div id="step-password" class="forgot-step hidden">
+                        <div class="success-icon">✓</div>
+                        <h3>Phone Verified!</h3>
+                        <p class="verified-text">Create your new password below.</p>
+
+                        <form id="password-form" class="account-form">
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" name="newPassword" placeholder="Create a strong password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-new-password">Confirm Password</label>
+                                <input type="password" id="confirm-new-password" name="confirmPassword" placeholder="Confirm your password" required>
+                            </div>
+                            <button type="submit" class="cta-button full-width">Reset Password</button>
+                        </form>
+                    </div>
+
+                    <!-- Step 4: Success -->
+                    <div id="step-success" class="forgot-step hidden">
+                        <div class="success-container">
+                            <div class="success-icon large">✓</div>
+                            <h3>Password Reset Successful!</h3>
+                            <p>Your password has been changed successfully.</p>
+                            <button class="cta-button full-width" style="margin-top: 1.5rem;" onclick="navigateTo('page-login'); resetForgotPassword();">
+                                Back to Login
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- PAGE 4: DASHBOARD (Main Church Page) -->
+    <!-- ============================================== -->
+    <div id="page-dashboard" class="app-page">
+
+        <header class="header">
+            <div class="nav-container">
+                <div class="logo-area">
+                    <div class="logo-placeholder">
+                        <img src="ggfpcc.png" alt="GGFPC Logo" class="logo-img">
+                    </div>
+                    <div class="brand-name">GGFPC</div>
+                </div>
+                <nav>
+                    <ul class="nav-list">
+                        <li><a href="#home" class="nav-link">Home</a></li>
+                        <li><a href="#mission" class="nav-link">Our Mission</a></li>
+                        <li><a href="#live" class="nav-link">Live Stream</a></li>
+                        <li><a href="#announcements" class="nav-link">News</a></li>
+                        <li><a href="#activities" class="nav-link">Activities</a></li>
+                        <li><a href="#booking" class="nav-link">Book Pastor</a></li>
+                        <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                        <li><a href="#contact" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <!-- User Profile Section -->
+                <div class="user-profile">
+                    <div class="profile-details">
+                        <span class="profile-name" id="dashboard-user-name">Account</span>
+                    </div>
+                    <div class="profile-pic-container">
+                        <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                        <label for="profile-upload" class="profile-pic-label" title="Click to upload profile picture">
+                            <div class="profile-pic-placeholder" id="profile-preview">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>God's Glory Free Pentecostal Church</h1>
+                <p>Welcome to a place of worship, community, and spiritual growth. Join us in spreading the Gospel.</p>
+                <a href="#mission" class="cta-button">Learn More</a>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section id="mission" class="mission">
+            <h2 class="section-title">Our Mission</h2>
+            <p class="mission-text">
+                "Our Mission Is to Spread the Gospel of Jesus Christ."
+                <br><br>
+                We are dedicated to serving our community, fostering a welcoming environment
+                for all, and sharing the love and teachings of Jesus Christ through worship, fellowship, and outreach.
+            </p>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery">
+            <div class="gallery-content" style="text-align: center;">
+                <h2 class="section-title">Our Community Gallery</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder" style="background-image: url('https://images.unsplash.com/photo-1544427920-c49ccfb85579?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder" style="background-image: url('https://images.unsplash.com/photo-1510936111840-65e151ad71bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder" style="background-image: url('https://images.unsplash.com/photo-1507692049790-de58293a4697?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Stream Section -->
+        <section id="live" class="live-stream">
+            <div class="container">
+                <h2 class="section-title">Live Service Stream</h2>
+                <p class="section-subtitle">Join us online every Sunday at 10:00 AM</p>
+                <div class="video-wrapper">
+                    <div class="video-placeholder">
+                        <div class="play-button">▶</div>
+                        <p>Live Stream Offline</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Announcements Section -->
+        <section id="announcements" class="announcements-section">
+            <div class="container">
+                <h2 class="section-title">Church Announcements</h2>
+                <div class="announcement-card">
+                    <h3>📢 Upcoming Revival Service</h3>
+                    <p>Join us for a special 3-day revival starting this Friday at 6 PM.</p>
+                    <span class="date">Posted: Dec 10, 2024</span>
+                </div>
+                <div class="announcement-card">
+                    <h3>🙏 Prayer Meeting Change</h3>
+                    <p>Wednesday prayer meeting will be held online via Zoom this week.</p>
+                    <span class="date">Posted: Dec 08, 2024</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Church Activities Section -->
+        <section id="activities" class="activities-section">
+            <div class="container">
+                <h2 class="section-title">Weekly Activities</h2>
+                <div class="activities-grid">
+                    <div class="activity-item">
+                        <div class="day">Sunday</div>
+                        <div class="event">Worship Service</div>
+                        <div class="time">10:00 AM - 02:30 PM</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="day">Wednesday</div>
+                        <div class="event">Bible Study</div>
+                        <div class="time">6:00 PM</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="day">Every 3rd Friday Of The Month</div>
+                        <div class="event">Youth Night</div>
+                        <div class="time">7:00 PM</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="day">Saturday</div>
+                        <div class="event">Choir Practice</div>
+                        <div class="time">4:00 PM</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking" class="booking-section">
+            <div class="container">
+                <h2 class="section-title">Book a Meeting with the Pastor</h2>
+                <p class="section-subtitle">Schedule a time for counseling, prayer, or guidance.</p>
+                <form class="booking-form" onsubmit="event.preventDefault(); alert('Appointment request submitted!');">
+                    <div class="form-group">
+                        <label for="booking-name">Your Name</label>
+                        <input type="text" id="booking-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="booking-email">Email / Phone</label>
+                        <input type="text" id="booking-email" name="contact" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="booking-date">Preferred Date</label>
+                        <input type="date" id="booking-date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="booking-reason">Reason for Meeting</label>
+                        <textarea id="booking-reason" name="reason" rows="4" placeholder="Briefly describe..." required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Request Appointment</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>God's Glory Free Pentecostal Church</h3>
+                    <p>Address: JoeBar Community</p>
+                    <p>&copy; 2024 GGFPC. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- ALL JAVASCRIPT -->
+    <!-- ============================================== -->
+    <script>
+        // ========================================================
+        // NAVIGATION SYSTEM
+        // ========================================================
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.app-page').forEach(function(page) {
+                page.classList.remove('active-page');
+            });
+
+            // Show target page
+            var targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active-page');
+                window.scrollTo(0, 0);
+            }
+        }
+
+
+        // ========================================================
+        // LOGIN LOGIC
+        // ========================================================
+        var loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var email = document.getElementById('login-email').value;
+            var password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Extract user name from email (before @)
+            var userName = email.split('@')[0];
+            // Capitalize first letter
+            userName = userName.charAt(0).toUpperCase() + userName.slice(1);
+
+            // Set the user name on the dashboard
+            var dashUserName = document.getElementById('dashboard-user-name');
+            if (dashUserName) {
+                dashUserName.textContent = userName;
+            }
+
+            // Navigate to dashboard
+            navigateTo('page-dashboard');
+        });
+
+
+        // ========================================================
+        // LOGOUT
+        // ========================================================
+        function logoutUser() {
+            // Reset login form
+            document.getElementById('login-form').reset();
+
+            // Reset dashboard user name
+            var dashUserName = document.getElementById('dashboard-user-name');
+            if (dashUserName) {
+                dashUserName.textContent = 'Account';
+            }
+
+            // Go back to login
+            navigateTo('page-login');
+        }
+
+
+        // ========================================================
+        // TOGGLE PASSWORD VISIBILITY
+        // ========================================================
+        function togglePassword(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+
+        // ========================================================
+        // REGISTRATION LOGIC
+        // ========================================================
+        var regCurrentStep = 1;
+        var videoStream = null;
+
+        function regValidateStep(step) {
+            if (step === 1) {
+                var fname = document.getElementById('fname').value;
+                var lname = document.getElementById('lname').value;
+                var dob = document.getElementById('dob').value;
+                var regPhone = document.getElementById('phone').value;
+                if (!fname || !lname || !dob || !regPhone) {
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
+            }
+            if (step === 2) {
+                var email = document.getElementById('reg-email').value;
+                var password = document.getElementById('reg-password').value;
+                var confirmPassword = document.getElementById('reg-confirm-password').value;
+                if (!email || !password || !confirmPassword) {
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
+                if (password !== confirmPassword) {
+                    alert("Passwords don't match!");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function regShowStep(stepNum) {
+            // Hide all steps
+            document.querySelectorAll('#page-register .form-step').forEach(function(el) {
+                el.classList.remove('active-step-content');
+                el.classList.add('hidden-step');
+            });
+
+            // Show the target step
+            var targetStep = document.getElementById('reg-step-' + stepNum);
+            if (targetStep) {
+                targetStep.classList.remove('hidden-step');
+                targetStep.classList.add('active-step-content');
+            }
+
+            // Update progress bar
+            for (var i = 1; i <= 3; i++) {
+                var progressStep = document.getElementById('progress-step-' + i);
+                if (progressStep) {
+                    if (i <= stepNum) {
+                        progressStep.classList.add('active-step');
+                    } else {
+                        progressStep.classList.remove('active-step');
+                    }
+                }
+            }
+
+            regCurrentStep = stepNum;
+        }
+
+        function regNextStep(stepNum) {
+            if (regValidateStep(regCurrentStep)) {
+                regShowStep(stepNum);
+                if (stepNum === 3) {
+                    startCamera();
+                } else {
+                    stopCamera();
+                }
+            }
+        }
+
+        function regPrevStep(stepNum) {
+            regShowStep(stepNum);
+            if (stepNum === 3) {
+                startCamera();
+            } else {
+                stopCamera();
+            }
+        }
+
+        function completeRegistration() {
+            stopCamera();
+            alert('Registration completed successfully! You can now log in.');
+            // Reset registration form
+            document.getElementById('multi-step-form').reset();
+            regShowStep(1);
+            navigateTo('page-login');
+        }
+
+        async function startCamera() {
+            try {
+                var stream = await navigator.mediaDevices.getUserMedia({
+                    video: true
+                });
+                videoStream = stream;
+                var videoElement = document.getElementById('video-feed');
+                if (videoElement) {
+                    videoElement.srcObject = stream;
+                }
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                alert("Could not access camera. Please allow camera permissions.");
+            }
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+                videoStream = null;
+            }
+        }
+
+
+        // ========================================================
+        // FORGOT PASSWORD LOGIC
+        // ========================================================
+        var generatedOTP = '';
+        var timerInterval = null;
+        var timeRemaining = 15;
+        var otpExpired = false;
+
+        // DOM Elements
+        var stepPhone = document.getElementById('step-phone');
+        var stepOtp = document.getElementById('step-otp');
+        var stepPassword = document.getElementById('step-password');
+        var stepSuccess = document.getElementById('step-success');
+        var phoneForm = document.getElementById('phone-form');
+        var otpForm = document.getElementById('otp-form');
+        var passwordForm = document.getElementById('password-form');
+        var displayPhone = document.getElementById('display-phone');
+        var timerProgress = document.getElementById('timer-progress');
+        var timerCountdown = document.getElementById('timer-countdown');
+        var otpError = document.getElementById('otp-error');
+        var verifyBtn = document.getElementById('verify-btn');
+        var resendBtn = document.getElementById('resend-btn');
+        var otpInputs = document.querySelectorAll('.otp-input');
+
+        // Generate random 4-digit OTP
+        function generateOTP() {
+            generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+            console.log('Generated OTP (for demo):', generatedOTP);
+            alert('Demo OTP: ' + generatedOTP);
+            return generatedOTP;
+        }
+
+        // Start timer
+        function startTimer() {
+            timeRemaining = 90;
+            otpExpired = false;
+            timerCountdown.textContent = timeRemaining;
+            timerProgress.style.width = '100%';
+            resendBtn.disabled = true;
+            verifyBtn.disabled = false;
+            otpError.classList.add('hidden');
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(function() {
+                timeRemaining--;
+                timerCountdown.textContent = timeRemaining;
+                timerProgress.style.width = ((timeRemaining / 90) * 100) + '%';
+
+                if (timeRemaining <= 5) {
+                    timerCountdown.classList.add('warning');
+                    timerProgress.classList.add('warning');
+                }
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    otpExpired = true;
+                    resendBtn.disabled = false;
+                    verifyBtn.disabled = true;
+                    timerCountdown.textContent = '0';
+                    showForgotError('OTP has expired. Please request a new code.');
+                }
+            }, 1000);
+        }
+
+        function showForgotError(message) {
+            otpError.textContent = message;
+            otpError.classList.remove('hidden');
+        }
+
+        function hideForgotError() {
+            otpError.classList.add('hidden');
+        }
+
+        function showForgotStep(stepElement) {
+            document.querySelectorAll('.forgot-step').forEach(function(el) {
+                el.classList.add('hidden');
+                el.classList.remove('active');
+            });
+            stepElement.classList.remove('hidden');
+            stepElement.classList.add('active');
+        }
+
+        // Reset forgot password flow
+        function resetForgotPassword() {
+            if (timerInterval) clearInterval(timerInterval);
+            showForgotStep(stepPhone);
+            document.getElementById('phone-number').value = '';
+            otpInputs.forEach(function(input) {
+                input.value = '';
+            });
+            if (document.getElementById('new-password')) document.getElementById('new-password').value = '';
+            if (document.getElementById('confirm-new-password')) document.getElementById('confirm-new-password').value = '';
+            timerCountdown.classList.remove('warning');
+            timerProgress.classList.remove('warning');
+        }
+
+        // Phone form submission
+        phoneForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var phoneVal = document.getElementById('phone-number').value;
+
+            if (!phoneVal) {
+                alert('Please enter your phone number.');
+                return;
+            }
+
+            displayPhone.textContent = phoneVal;
+            generateOTP();
+            showForgotStep(stepOtp);
+            startTimer();
+            otpInputs[0].focus();
+        });
+
+        // OTP Input handling
+        otpInputs.forEach(function(input, index) {
+            input.addEventListener('input', function(e) {
+                var value = e.target.value;
+
+                if (!/^\d*$/.test(value)) {
+                    e.target.value = '';
+                    return;
+                }
+
+                if (value && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+
+                hideForgotError();
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                var pastedData = e.clipboardData.getData('text').slice(0, 4);
+
+                if (/^\d+$/.test(pastedData)) {
+                    pastedData.split('').forEach(function(char, i) {
+                        if (otpInputs[i]) {
+                            otpInputs[i].value = char;
+                        }
+                    });
+                    otpInputs[Math.min(pastedData.length, otpInputs.length - 1)].focus();
+                }
+            });
+        });
+
+        // OTP form submission
+        otpForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (otpExpired) {
+                showForgotError('OTP has expired. Please request a new code.');
+                return;
+            }
+
+            var enteredOTP = '';
+            otpInputs.forEach(function(input) {
+                enteredOTP += input.value;
+            });
+
+            if (enteredOTP.length !== 4) {
+                showForgotError('Please enter the complete 4-digit code.');
+                return;
+            }
+
+            if (enteredOTP === generatedOTP) {
+                clearInterval(timerInterval);
+                showForgotStep(stepPassword);
+            } else {
+                showForgotError('Invalid OTP. Please try again.');
+                otpInputs.forEach(function(input) {
+                    input.value = '';
+                });
+                otpInputs[0].focus();
+            }
+        });
+
+        // Resend OTP
+        resendBtn.addEventListener('click', function() {
+            otpInputs.forEach(function(input) {
+                input.value = '';
+            });
+            timerCountdown.classList.remove('warning');
+            timerProgress.classList.remove('warning');
+
+            generateOTP();
+            startTimer();
+            otpInputs[0].focus();
+        });
+
+        // Password form submission
+        passwordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var newPassword = document.getElementById('new-password').value;
+            var confirmPassword = document.getElementById('confirm-new-password').value;
+
+            if (!newPassword || !confirmPassword) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            showForgotStep(stepSuccess);
+        });
+
+
+        // ========================================================
+        // DASHBOARD - PROFILE IMAGE PREVIEW
+        // ========================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            var profileUpload = document.getElementById('profile-upload');
+            var profilePreview = document.getElementById('profile-preview');
+
+            if (profileUpload && profilePreview) {
+                profileUpload.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(event) {
+                            var result = event.target.result;
+                            profilePreview.style.backgroundImage = 'url(' + result + ')';
+                            profilePreview.style.backgroundSize = 'cover';
+                            profilePreview.style.backgroundPosition = 'center';
+                            profilePreview.innerHTML = '';
+                        };
+
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
